@@ -1,7 +1,7 @@
 import { Box, Button, Card, Flex, Heading, Stack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import Input from "../customs/input";
-import Select from "../customs/select";
+import Input from "../../customs/input";
+import Select from "../../customs/select";
 
 const CreateSector = () => {
   return (
@@ -10,7 +10,7 @@ const CreateSector = () => {
         <Card w="40%" p="10" border="1px solid #e2e8f0">
           <Stack spacing="6">
             <Heading>Sector</Heading>
-            
+
             <Formik
               enableReinitialize
               validateOnMount
@@ -27,43 +27,17 @@ const CreateSector = () => {
                 return (
                   <Form>
                     <Stack spacing="6">
-                      <Input
-                        name="firstName"
-                        type="text"
-                        label="First Name"
-                        placeholder="John"
-                      />
+                      <Input name="firstName" type="text" label="First Name" placeholder="John" />
 
-                      <Input
-                        name="lastName"
-                        type="text"
-                        label="Last Name"
-                        placeholder="Smith"
-                      />
+                      <Input name="lastName" type="text" label="Last Name" placeholder="Smith" />
 
                       <Select
                         name="sector"
                         label="Sector"
                         // defaultValue="United Kingdom"
-                      >
-                        {/* {countryList.map(({ name }) => (
-                        <option key={name} value={name}>
-                          {name}
-                        </option>
-                      ))} */}
-                      </Select>
+                      ></Select>
 
-                      <Select
-                        name="division"
-                        label="Division of Sector"
-                        // defaultValue="United Kingdom"
-                      >
-                        {/* {countryList.map(({ name }) => (
-                        <option key={name} value={name}>
-                          {name}
-                        </option>
-                      ))} */}
-                      </Select>
+                      <Select name="division" label="Division of Sector"></Select>
 
                       <Button
                         type="submit"
