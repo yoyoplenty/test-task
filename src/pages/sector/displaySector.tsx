@@ -18,7 +18,7 @@ interface Sector {
   updatedAt: string;
 }
 
-const Sector = () => {
+const DisplaySector = () => {
   async function getSectors(): Promise<SectorResponse> {
     return (await getData('/sectors/parent'));
   } 
@@ -31,7 +31,7 @@ const Sector = () => {
   return (
     <Flex justifyContent="center" alignItems="center" minHeight="100vh">
       <Card
-        width={{ base: "90%", md: "80%", lg: "50%" }}
+        width={{ base: "90%", md: "80%", lg: '60%', xl: "50%" }}
         p={{ base: "20px", md: "40px" }}
       >
         <Stack spacing="24px">
@@ -42,7 +42,7 @@ const Sector = () => {
             </Button>
           </Flex>
 
-          {data?.data?.map((item) => (
+          {data?.data?.map((item: Sector) => (
             <Box
               border="1px solid rgba(123, 123, 123, 0.50)"
               p="16px"
@@ -61,4 +61,4 @@ const Sector = () => {
   );
 };
 
-export default Sector;
+export default DisplaySector;
