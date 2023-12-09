@@ -1,22 +1,26 @@
-import React from 'react';
-import { ChakraProvider } from '@chakra-ui/react'
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { theme } from './theme';
+import React from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { theme } from "./theme";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <ChakraProvider theme={theme}>
     <React.StrictMode>
-    <App />
-  </React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </React.StrictMode>
   </ChakraProvider>
-  
 );
 
 // If you want to start measuring performance in your app, pass a function

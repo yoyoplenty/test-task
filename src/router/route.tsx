@@ -1,8 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { CreateChildSubSectorPage, CreateSectorPage, CreateSubSectorPage, LoginPage } from "../pages";
-// import AuthorizeUser from "../utils/middleware/auth";
 import { RootLayout } from "../layout";
-import Sector from "../pages/sector/sector";
+import Sector from "../pages/sector/displaySector";
 
 const routes = createBrowserRouter([
   {
