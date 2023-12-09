@@ -1,7 +1,14 @@
-import CreateSector from "./components/sector/createSector";
+import { Toaster } from "react-hot-toast";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 function App() {
-  return <CreateSector />;
+  return (
+    <main>
+      <Toaster />
+      <RouterProvider router={router} />
+    </main>
+  );
 }
 
 export default App;
