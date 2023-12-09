@@ -3,11 +3,17 @@ import { Card } from "@chakra-ui/card";
 import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
 import { ReactComponent as Arrow } from "../../svgs/arrow-right.svg";
 import { getData } from "../../utils/helpers/request";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { GenericResponse, Sector } from "../../types/response";
 import { useState } from "react";
+import { appStore } from "../../store";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const DisplaySector = () => {
+  const store = appStore();
+  const navigate = useNavigate();
+
   const [parentSectorId, setParentSectorId] = useState("");
 
   async function getSectors(): Promise<GenericResponse> {
@@ -20,14 +26,18 @@ const DisplaySector = () => {
   const [getSector, getSubSector] = useQueries({
     queries: [
       { queryKey: ["get-sector"], queryFn: getSectors },
-      { queryKey: ["get-subsectors"], queryFn: getSubSectors },
+      { queryKey: ["get-sub-sectors"], queryFn: getSubSectors },
     ],
   });
 
   const handleGetSubSectors = (parentSectorId: string) => {
     setParentSectorId(parentSectorId);
 
-    console.log(getSubSector?.data);
+    const data = getSubSector?.data?.data;
+    store.setSubSector(data);
+
+    toast.success("Signin successful");
+    navigate("/dashboard");
   };
 
   return (
@@ -46,6 +56,7 @@ const DisplaySector = () => {
               border="1px solid rgba(123, 123, 123, 0.50)"
               p="16px"
               borderRadius="8px"
+              cursor={"pointer"}
               key={item?._id}
               onClick={() => handleGetSubSectors(item?._id)}
             >
