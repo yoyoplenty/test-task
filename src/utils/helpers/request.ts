@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = process.env.BASE_URL || "https://sector-app-api.onrender.com/ap/v1";
+const baseUrl = process.env.BASE_URL || "https://sector-app-api.onrender.com/api/v1";
 
 const config = () => {
   return {
