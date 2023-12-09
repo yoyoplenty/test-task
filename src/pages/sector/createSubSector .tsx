@@ -1,19 +1,13 @@
-import { Box, Button, Flex, Heading, Stack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { object, string } from "yup";
 import Input from "../../customs/input";
 import { ReactComponent as Icon } from "../../svgs/login.svg";
 
-const Login = () => {
+const CreateSubSector = () => {
   const validationSchema = object({
-    email: string().email().required("Email is required"),
-    password: string()
-      .required("Password is required")
-      .min(8, "Password must be at least 8 characters")
-      .matches(/[A-Z]/, "Password must contain an uppercase letter")
-      .matches(/[a-z]/, "Password must contain a lowercase letter")
-      .matches(/[0-9]/, "Password must contain a number")
-      .matches(/[~!@#$%^&*()_+=-]/, "Password must contain a special character"),
+    name: string().required("Sector Name is Required"),
+    parentSector: string().required("Parent Status is Required"),
   });
 
   return (
@@ -24,12 +18,8 @@ const Login = () => {
         </VStack>
 
         <Heading my={3} textAlign={"center"}>
-          Welcome back
+          Add Sub Sector
         </Heading>
-
-        <Text size={"sm"} textAlign={"center"}>
-          Enter Your login details
-        </Text>
       </Box>
       <Box
         width={{ base: "90%", md: 500 }}
@@ -44,8 +34,8 @@ const Login = () => {
           enableReinitialize
           validateOnMount
           initialValues={{
-            email: "",
-            password: "",
+            name: "",
+            parentSector: "",
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {}}
@@ -55,11 +45,11 @@ const Login = () => {
               <Form>
                 <Box m={[5, 7]}>
                   <Stack gap="4">
-                    <Input placeholder="Email" name="email" label="Email Address" type="email" />
+                    <Input placeholder="Parent Sector" name="parentSector" label="Parent Sector" type="text" />
 
-                    <Input placeholder="Password" name="password" label="Password" type="password" />
+                    <Input placeholder="Sector Name" name="name" label="Sector Name" type="text" />
 
-                    <Button>Login</Button>
+                    <Button>Add Sub Sector</Button>
                   </Stack>
                 </Box>
               </Form>
@@ -71,4 +61,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default CreateSubSector;
