@@ -1,43 +1,27 @@
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@chakra-ui/button";
 import { Card } from "@chakra-ui/card";
 import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
 import { ReactComponent as Arrow } from "../../svgs/arrow-right.svg";
 import { getData } from "../../utils/helpers/request";
-import { useQueries } from "@tanstack/react-query";
 import { GenericResponse, Sector } from "../../types/response";
-import { useState } from "react";
 import { appStore } from "../../store";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
 const DisplaySector = () => {
   const store = appStore();
   const navigate = useNavigate();
 
-  const [parentSectorId, setParentSectorId] = useState("");
-
   async function getSectors(): Promise<GenericResponse> {
     return await getData("/sectors/parent");
   }
-  async function getSubSectors(): Promise<GenericResponse> {
-    return await getData(`/sectors/sub?parentSector=${parentSectorId}`);
-  }
 
-  const [getSector, getSubSector] = useQueries({
-    queries: [
-      { queryKey: ["get-sector"], queryFn: getSectors },
-      { queryKey: ["get-sub-sectors"], queryFn: getSubSectors },
-    ],
-  });
+  const getSector = useQuery({ queryKey: ["get-sectors"], queryFn: getSectors });
 
-  const handleGetSubSectors = (parentSectorId: string) => {
-    setParentSectorId(parentSectorId);
+  const handleGetSubSectors = async (parentSector: Sector) => {
+    store.setParentSector(parentSector);
 
-    const data = getSubSector?.data?.data;
-    store.setSubSector(data);
-
-    toast.success("Signin successful");
-    navigate("/dashboard");
+    navigate("/sub-sector");
   };
 
   return (
@@ -58,7 +42,7 @@ const DisplaySector = () => {
               borderRadius="8px"
               cursor={"pointer"}
               key={item?._id}
-              onClick={() => handleGetSubSectors(item?._id)}
+              onClick={() => handleGetSubSectors(item)}
             >
               <Flex justifyContent="space-between" alignItems="center">
                 <Text>{item?.name}</Text>
