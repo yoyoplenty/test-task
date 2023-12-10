@@ -1,12 +1,32 @@
 import { Box, Button, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 import { object, string } from "yup";
 import Input from "../../customs/input";
 import { ReactComponent as Icon } from "../../svgs/login.svg";
+import { useMutation } from "@tanstack/react-query";
+import { postData } from "../../utils/helpers/request";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CreateSector = () => {
+  const navigate = useNavigate();
+
   const validationSchema = object({
     name: string().required("Sector Name is Required"),
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (payload) => {
+      return await postData("/sectors", payload);
+    },
+    onSuccess: (data) => {
+      toast.success("Sector created successfully");
+
+      navigate("/add-sub-sector");
+    },
+    onError: (error) => {
+      console.error("Mutation error:", error);
+    },
   });
 
   return (
@@ -32,23 +52,23 @@ const CreateSector = () => {
         <Formik
           enableReinitialize
           validateOnMount
-          initialValues={{
-            name: "",
-          }}
+          initialValues={{ name: "" }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {}}
+          onSubmit={async (values: any) => {
+            await mutation.mutate(values);
+          }}
         >
           {(props) => {
             return (
-              <Form>
+              <form onSubmit={props.handleSubmit}>
                 <Box m={[5, 7]}>
                   <Stack gap="4">
                     <Input placeholder="Sector Name" name="name" label="Sector Name" type="text" />
 
-                    <Button>Add Sector</Button>
+                    <Button type="submit">Add Sector</Button>
                   </Stack>
                 </Box>
-              </Form>
+              </form>
             );
           }}
         </Formik>

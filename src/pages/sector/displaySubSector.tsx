@@ -8,17 +8,27 @@ import { appStore } from "../../store";
 import { getData } from "../../utils/helpers/request";
 import { useQuery } from "@tanstack/react-query";
 import { GenericResponse, Sector } from "../../types/response";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const DisplaySubSector = () => {
   const store = appStore();
+  const navigate = useNavigate();
+
   const parentSector = store.parentSector;
 
   async function getSubSectors(): Promise<GenericResponse> {
-    return await getData(`/sectors/sub?parentSector=${store.parentSector._id}`);
+    return await getData(`/sectors/sub?parentSector=${parentSector._id}`);
   }
 
   const getSubSector = useQuery({ queryKey: ["get-sub-sectors"], queryFn: getSubSectors });
-  const subSector = getSubSector?.data?.data;
+  const subSectors = getSubSector?.data?.data;
+
+  const handleGetChildSubSectors = async (subSector: Sector) => {
+    store.setSubSector(subSector);
+
+    navigate("/child-sub-sector");
+  };
 
   return (
     <Box>
@@ -40,12 +50,19 @@ const DisplaySubSector = () => {
               <Heading fontSize="2xl">Sub Sectors</Heading>
 
               <Button fontSize="xs" width={{ md: "215px" }}>
-                Add New
+                <Link to={"/add-sub-sector"}>Add New</Link>
               </Button>
             </Flex>
 
-            {subSector?.map((item: Sector) => (
-              <Box border="1px solid rgba(123, 123, 123, 0.50)" p="16px" borderRadius="8px" key={item._id}>
+            {subSectors?.map((item: Sector) => (
+              <Box
+                border="1px solid rgba(123, 123, 123, 0.50)"
+                p="16px"
+                borderRadius="8px"
+                key={item._id}
+                cursor={"pointer"}
+                onClick={() => handleGetChildSubSectors(item)}
+              >
                 <Flex justifyContent="space-between" alignItems="center">
                   <Text>{item.name}</Text>
 

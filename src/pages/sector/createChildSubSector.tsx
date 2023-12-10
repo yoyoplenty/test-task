@@ -1,13 +1,42 @@
-import { Box, Button, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Select, Stack, Text, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { object, string } from "yup";
 import Input from "../../customs/input";
 import { ReactComponent as Icon } from "../../svgs/login.svg";
+import { useQuery } from "@tanstack/react-query";
+import { getData, postData } from "../../utils/helpers/request";
+import { useMutation } from "@tanstack/react-query";
+import { GenericResponse, Sector } from "../../types/response";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const CreateChildSubSector = () => {
+  const navigate = useNavigate();
+
+  async function getSubSectors(): Promise<GenericResponse> {
+    return await getData("/sectors/sub");
+  }
+
+  const getSector = useQuery({ queryKey: ["get-sub-sectors"], queryFn: getSubSectors });
+  const subSectors = getSector?.data?.data;
+
   const validationSchema = object({
     name: string().required("Sector Name is Required"),
     parentSector: string().required("Parent Status is Required"),
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (payload) => {
+      return await postData("/sectors", payload);
+    },
+    onSuccess: (data) => {
+      toast.success("Child Sub Sector created successfully");
+
+      navigate("/sectors");
+    },
+    onError: (error) => {
+      console.error("Mutation error:", error);
+    },
   });
 
   return (
@@ -33,23 +62,32 @@ const CreateChildSubSector = () => {
         <Formik
           enableReinitialize
           validateOnMount
-          initialValues={{
-            name: "",
-            parentSector: "",
-          }}
+          initialValues={{ name: "", parentSector: "" }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {}}
+          onSubmit={async (values: any) => {
+            await mutation.mutate(values);
+          }}
         >
           {(props) => {
             return (
-              <Form>
+              <Form onSubmit={props.handleSubmit}>
                 <Box m={[5, 7]}>
                   <Stack gap="4">
-                    <Input placeholder="Child Sector" name="parentSector" label="Child Sector" type="text" />
+                    <Text size={"md"}>Sub Sector</Text>
+                    <Stack spacing={3}>
+                      <Select placeholder="Sub Sector">
+                        {subSectors &&
+                          subSectors.map((subSector: Sector) => (
+                            <option key={subSector._id} value={subSector._id}>
+                              {subSector.name}
+                            </option>
+                          ))}
+                      </Select>
+                    </Stack>
 
                     <Input placeholder="Sector Name" name="name" label="Sector Name" type="text" />
 
-                    <Button>Add Child Sector</Button>
+                    <Button type="submit">Add Child Sector</Button>
                   </Stack>
                 </Box>
               </Form>

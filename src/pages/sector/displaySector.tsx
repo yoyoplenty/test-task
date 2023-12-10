@@ -7,6 +7,7 @@ import { ReactComponent as Arrow } from "../../svgs/arrow-right.svg";
 import { getData } from "../../utils/helpers/request";
 import { GenericResponse, Sector } from "../../types/response";
 import { appStore } from "../../store";
+import { Link } from "react-router-dom";
 
 const DisplaySector = () => {
   const store = appStore();
@@ -31,7 +32,7 @@ const DisplaySector = () => {
           <Flex justifyContent="space-between" alignItems="center">
             <Heading fontSize="2xl">Sectors</Heading>
             <Button fontSize="xs" width={{ md: "215px" }}>
-              Add New
+              <Link to={"/add-sector"}> Add New</Link>
             </Button>
           </Flex>
 
