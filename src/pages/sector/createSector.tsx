@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Box, Button, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { object, string } from "yup";
@@ -7,9 +8,16 @@ import { useMutation } from "@tanstack/react-query";
 import { postData } from "../../utils/helpers/request";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { authorizeUserRole } from "../../utils/middleware/auth";
 
 const CreateSector = () => {
   const navigate = useNavigate();
+
+  const isAuthorized = authorizeUserRole();
+
+  useEffect(() => {
+    if (!isAuthorized) navigate("/");
+  }, [isAuthorized, navigate]);
 
   const validationSchema = object({
     name: string().required("Sector Name is Required"),

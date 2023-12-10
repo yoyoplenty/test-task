@@ -5,7 +5,7 @@ import { setLocalStorage } from "../utils/storage";
 import { getCurrentParentSector, getCurrentUser, getCurrentSubSector } from "../utils/storage/data";
 
 type Store = {
-  authUser: IUser | {};
+  authUser: IUser | any;
   loading: boolean;
   parentSector: Sector | any;
   subSector: Sector | any;

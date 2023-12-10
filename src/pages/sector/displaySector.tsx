@@ -8,10 +8,18 @@ import { getData } from "../../utils/helpers/request";
 import { GenericResponse, Sector } from "../../utils/types/response";
 import { appStore } from "../../store";
 import { Link } from "react-router-dom";
+import { authorizeUserRole } from "../../utils/middleware/auth";
+import { useEffect } from "react";
 
 const DisplaySector = () => {
   const store = appStore();
   const navigate = useNavigate();
+
+  const isAuthorized = authorizeUserRole();
+
+  useEffect(() => {
+    if (!isAuthorized) navigate("/");
+  }, [isAuthorized, navigate]);
 
   async function getSectors(): Promise<GenericResponse> {
     return await getData("/sectors/parent");
@@ -27,15 +35,12 @@ const DisplaySector = () => {
 
   return (
     <Flex justifyContent="center" alignItems="center" minHeight="100vh">
-      <Card
-        width={{ base: "90%", md: "80%", lg: '60%', xl: "580px" }}
-        p={{ base: "20px", md: "40px" }}
-      >
+      <Card width={{ base: "90%", md: "80%", lg: "60%", xl: "580px" }} p={{ base: "20px", md: "40px" }}>
         <Stack spacing="24px">
           <Flex justifyContent="space-between" alignItems="center">
             <Heading fontSize="2xl">Sectors</Heading>
             <Button fontSize="sm" width={{ md: "215px" }}>
-            <Link to={"/add-sector"}> Add New</Link>
+              <Link to={"/add-sector"}> Add New</Link>
             </Button>
           </Flex>
 

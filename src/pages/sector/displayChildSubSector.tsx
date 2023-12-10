@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Button } from "@chakra-ui/button";
 import { Card } from "@chakra-ui/card";
 import { Box, Flex, HStack, Heading, Stack, Text } from "@chakra-ui/layout";
@@ -8,10 +9,18 @@ import { appStore } from "../../store";
 import { getData } from "../../utils/helpers/request";
 import { useQuery } from "@tanstack/react-query";
 import { GenericResponse, Sector } from "../../utils/types/response";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { authorizeUserRole } from "../../utils/middleware/auth";
 
 const DisplayChildSubSector = () => {
   const store = appStore();
+  const navigate = useNavigate();
+
+  const isAuthorized = authorizeUserRole();
+
+  useEffect(() => {
+    if (!isAuthorized) navigate("/");
+  }, [isAuthorized, navigate]);
 
   const subSector = store.subSector;
 

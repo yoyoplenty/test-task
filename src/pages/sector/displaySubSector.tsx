@@ -10,10 +10,18 @@ import { useQuery } from "@tanstack/react-query";
 import { GenericResponse, Sector } from "../../utils/types/response";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { authorizeUserRole } from "../../utils/middleware/auth";
+import { useEffect } from "react";
 
 const DisplaySubSector = () => {
   const store = appStore();
   const navigate = useNavigate();
+
+  const isAuthorized = authorizeUserRole();
+
+  useEffect(() => {
+    if (!isAuthorized) navigate("/");
+  }, [isAuthorized, navigate]);
 
   const parentSector = store.parentSector;
 
@@ -32,22 +40,8 @@ const DisplaySubSector = () => {
 
   return (
     <Box>
-      <Flex
-        mt="40px"
-        ms="100px"
-        direction="column"
-        alignItems="flex-start"
-        gap="4"
-      >
-        <Button
-          variant="ghosted"
-          color="#4197E8"
-          fontWeight="400"
-          fontSize="md"
-          ps="0"
-          display="flex"
-          gap="2"
-        >
+      <Flex mt="40px" ms="100px" direction="column" alignItems="flex-start" gap="4">
+        <Button variant="ghosted" color="#4197E8" fontWeight="400" fontSize="md" ps="0" display="flex" gap="2">
           <ArrowLeft />
           <Text>Go Back</Text>
         </Button>
@@ -58,10 +52,7 @@ const DisplaySubSector = () => {
       </Flex>
 
       <Flex justifyContent="center" mt="92px">
-        <Card
-          width={{ base: "90%", md: "80%", lg: "60%", xl: "580px" }}
-          p={{ base: "20px", md: "40px" }}
-        >
+        <Card width={{ base: "90%", md: "80%", lg: "60%", xl: "580px" }} p={{ base: "20px", md: "40px" }}>
           <Stack spacing="24px">
             <Flex justifyContent="space-between" alignItems="center">
               <Heading fontSize="2xl">Sub Sectors</Heading>

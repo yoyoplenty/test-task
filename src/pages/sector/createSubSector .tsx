@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Box, Button, Flex, Heading, Select, Stack, Text, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { object, string } from "yup";
@@ -10,9 +11,16 @@ import { useQuery } from "@tanstack/react-query";
 import { GenericResponse, Sector } from "../../utils/types/response";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { authorizeUserRole } from "../../utils/middleware/auth";
 
 const CreateSubSector = () => {
   const navigate = useNavigate();
+
+  const isAuthorized = authorizeUserRole();
+
+  useEffect(() => {
+    if (!isAuthorized) navigate("/");
+  }, [isAuthorized, navigate]);
 
   async function getSectors(): Promise<GenericResponse> {
     return await getData("/sectors/parent");

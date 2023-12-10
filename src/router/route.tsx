@@ -10,6 +10,7 @@ import {
   LoginPage,
 } from "../pages";
 import { RootLayout } from "../layout";
+import { AuthorizeUser } from "../utils/middleware/auth";
 
 const routes = createBrowserRouter([
   {
@@ -17,13 +18,62 @@ const routes = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <LoginPage /> },
-      { path: "sector", element: <DisplaySectorPage /> },
-      { path: "sub-sector", element: <DisplaySubSectorPage /> },
-      { path: "add-sector", element: <CreateSectorPage /> },
-      { path: "add-sub-sector", element: <CreateSubSectorPage /> },
-      { path: "child-sub-sector", element: <DisplayChildSubSectorPage /> },
-      { path: "add-child-sub-sector", element: <CreateChildSubSectorPage /> },
-      { path: "add-user-sector", element: <CreateUserSectorPage /> },
+      {
+        path: "sector",
+        element: (
+          <AuthorizeUser>
+            <DisplaySectorPage />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "sub-sector",
+        element: (
+          <AuthorizeUser>
+            <DisplaySubSectorPage />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "add-sector",
+        element: (
+          <AuthorizeUser>
+            <CreateSectorPage />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "add-sub-sector",
+        element: (
+          <AuthorizeUser>
+            <CreateSubSectorPage />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "child-sub-sector",
+        element: (
+          <AuthorizeUser>
+            <DisplayChildSubSectorPage />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "add-child-sub-sector",
+        element: (
+          <AuthorizeUser>
+            <CreateChildSubSectorPage />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "add-user-sector",
+        element: (
+          <AuthorizeUser>
+            <CreateUserSectorPage />
+          </AuthorizeUser>
+        ),
+      },
     ],
   },
 ]);
