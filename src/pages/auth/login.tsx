@@ -1,18 +1,10 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Stack, Text, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { object, string } from "yup";
 import Input from "../../customs/input";
-import { ReactComponent as Login } from "../../svgs/login.svg";
+import { ReactComponent as Icon } from "../../svgs/login.svg";
 
-const Create = () => {
+const Login = () => {
   const validationSchema = object({
     email: string().email().required("Email is required"),
     password: string()
@@ -21,17 +13,14 @@ const Create = () => {
       .matches(/[A-Z]/, "Password must contain an uppercase letter")
       .matches(/[a-z]/, "Password must contain a lowercase letter")
       .matches(/[0-9]/, "Password must contain a number")
-      .matches(
-        /[~!@#$%^&*()_+=-]/,
-        "Password must contain a special character"
-      ),
+      .matches(/[~!@#$%^&*()_+=-]/, "Password must contain a special character"),
   });
 
   return (
     <Flex minHeight="100vh" align="center" justify="center" direction="column">
       <Box m={3}>
         <VStack>
-          <Login />
+          <Icon />
         </VStack>
 
         <Heading my={3} textAlign={"center"}>
@@ -66,19 +55,9 @@ const Create = () => {
               <Form>
                 <Box m={[5, 7]}>
                   <Stack gap="4">
-                    <Input
-                      placeholder="Email"
-                      name="email"
-                      label="Email Address"
-                      type="email"
-                    />
+                    <Input placeholder="Email" name="email" label="Email Address" type="email" />
 
-                    <Input
-                      placeholder="Password"
-                      name="password"
-                      label="Password"
-                      type="password"
-                    />
+                    <Input placeholder="Password" name="password" label="Password" type="password" />
 
                     <Button>Login</Button>
                   </Stack>
@@ -92,4 +71,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Login;

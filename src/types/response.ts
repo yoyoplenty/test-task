@@ -6,7 +6,7 @@ type LoginData = {
 };
 
 export interface GenericResponse {
-  statusCode: number;
+  success: boolean;
   message: string;
   data?: any;
 }
@@ -22,4 +22,13 @@ export interface IUserResponse {
   data: {
     user: IUser;
   };
+}
+
+export interface Sector {
+  _id: string;
+  name: string;
+  parentSector?: string;
+  subSectors?: Sector[] | undefined;
+  createdAt: string;
+  updatedAt: string;
 }

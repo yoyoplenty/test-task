@@ -1,3 +1,11 @@
+import { useEffect } from "react";
+
+export const useLocalStorage = <T>(key: string, value: T) => {
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+};
+
 export const setLocalStorage = (item: string, data: any): void => {
   localStorage.setItem(item, JSON.stringify(data));
 };
