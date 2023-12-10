@@ -9,8 +9,10 @@ import { postData } from "../../utils/helpers/request";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { authorizeUserRole } from "../../utils/middleware/auth";
+import { appStore } from "../../store";
 
 const CreateSector = () => {
+  const store = appStore();
   const navigate = useNavigate();
 
   const isAuthorized = authorizeUserRole();
@@ -25,7 +27,7 @@ const CreateSector = () => {
 
   const mutation = useMutation({
     mutationFn: async (payload) => {
-      return await postData("/sectors", payload);
+      return await postData("/sectors", payload, store.authUser.token);
     },
     onSuccess: (data) => {
       toast.success("Sector created successfully");

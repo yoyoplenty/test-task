@@ -28,7 +28,7 @@ export interface Sector {
   _id: string;
   name: string;
   parentSector?: string;
-  subSectors?: Sector[] | undefined;
+  subSectors?: Sector[] | any;
   createdAt: string;
   updatedAt: string;
 }

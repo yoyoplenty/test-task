@@ -22,7 +22,7 @@ const DisplaySector = () => {
   }, [isAuthorized, navigate]);
 
   async function getSectors(): Promise<GenericResponse> {
-    return await getData("/sectors/parent");
+    return await getData("/sectors/parent", store.authUser.token);
   }
 
   const getSector = useQuery({ queryKey: ["get-sectors"], queryFn: getSectors });

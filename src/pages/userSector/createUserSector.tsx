@@ -13,7 +13,6 @@ import { convertToFirstNameLastName } from "../../utils/helpers";
 
 const CreateUserSector = () => {
   const store = appStore();
-
   const navigate = useNavigate();
 
   const userSector = store.userSector;
@@ -30,7 +29,7 @@ const CreateUserSector = () => {
 
   const mutation = useMutation({
     mutationFn: async (payload: IUserSector) => {
-      return await postData("/user-sectors", payload);
+      return await postData("/user-sectors", payload, store.authUser.token);
     },
     onSuccess: (response) => {
       const res = response.response.data;

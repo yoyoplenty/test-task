@@ -15,8 +15,6 @@ const Login = () => {
   const store = appStore();
   const navigate = useNavigate();
 
-  //TODO check if user is loggedIn and also an ADMIN
-
   const validationSchema = object({
     email: string().email().required("Email is required"),
     password: string().required("Password is required").min(8, "Password must be at least 8 characters"),
@@ -28,8 +26,7 @@ const Login = () => {
     },
     onSuccess: (res) => {
       const data = res?.data?.data;
-
-      const user = Object.assign(data.user, { accessToken: data.accessToken });
+      const user = Object.assign(data.user, { token: data.token });
 
       setLocalStorage("user", user);
       store.setAuthUser(getCurrentUser());

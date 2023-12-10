@@ -12,8 +12,10 @@ import { GenericResponse, Sector } from "../../utils/types/response";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { authorizeUserRole } from "../../utils/middleware/auth";
+import { appStore } from "../../store";
 
 const CreateSubSector = () => {
+  const store = appStore();
   const navigate = useNavigate();
 
   const isAuthorized = authorizeUserRole();
@@ -23,7 +25,7 @@ const CreateSubSector = () => {
   }, [isAuthorized, navigate]);
 
   async function getSectors(): Promise<GenericResponse> {
-    return await getData("/sectors/parent");
+    return await getData("/sectors/parent", store.authUser.token);
   }
 
   const getSector = useQuery({ queryKey: ["get-sectors"], queryFn: getSectors });

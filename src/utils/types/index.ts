@@ -7,6 +7,7 @@ export interface IUser {
   middleName: string;
   createdAt: string;
   updatedAt: string;
+  token: string;
 }
 
 export interface IUserSector {

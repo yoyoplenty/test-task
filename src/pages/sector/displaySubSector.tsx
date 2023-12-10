@@ -26,7 +26,7 @@ const DisplaySubSector = () => {
   const parentSector = store.parentSector;
 
   async function getSubSectors(): Promise<GenericResponse> {
-    return await getData(`/sectors/sub?parentSector=${parentSector._id}`);
+    return await getData(`/sectors/sub?parentSector=${parentSector._id}`, store.authUser.token);
   }
 
   const getSubSector = useQuery({ queryKey: ["get-sub-sectors"], queryFn: getSubSectors });
