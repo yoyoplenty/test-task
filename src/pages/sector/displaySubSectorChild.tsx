@@ -5,18 +5,12 @@ import { ReactComponent as Delete } from "../../svgs/delete.svg";
 import { ReactComponent as Edit } from "../../svgs/edit.svg";
 import { ReactComponent as ArrowLeft } from "../../svgs/arrow-left.svg";
 
-const DisplaySubSector = () => {
+const DisplaySubSectorChild = () => {
   const subSector = ["Construction", "Food and Beverages", "Furniture"];
 
   return (
     <Box>
-      <Flex
-        mt="40px"
-        ms="100px"
-        direction="column"
-        alignItems="flex-start"
-        gap="4"
-      >
+      <Flex mt="40px" ms="100px" direction="column" alignItems="flex-start" gap='4'>
         <Button
           variant="ghosted"
           color="#4197E8"
@@ -24,7 +18,7 @@ const DisplaySubSector = () => {
           fontSize="md"
           ps="0"
           display="flex"
-          gap="2"
+          gap='2'
         >
           <ArrowLeft />
           <Text>Go Back</Text>
@@ -42,7 +36,7 @@ const DisplaySubSector = () => {
         >
           <Stack spacing="24px">
             <Flex justifyContent="space-between" alignItems="center">
-              <Heading fontSize="2xl">Sub Sectors</Heading>
+              <Heading fontSize="2xl">Sub Sectors Child</Heading>
 
               <Button fontSize="sm" width={{ md: "215px" }}>
                 Add New
@@ -78,4 +72,4 @@ const DisplaySubSector = () => {
   );
 };
 
-export default DisplaySubSector;
+export default DisplaySubSectorChild;
