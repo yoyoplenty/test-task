@@ -27,12 +27,15 @@ const DisplaySector = () => {
 
   return (
     <Flex justifyContent="center" alignItems="center" minHeight="100vh">
-      <Card width={{ base: "90%", md: "80%", lg: "50%" }} p={{ base: "20px", md: "40px" }}>
+      <Card
+        width={{ base: "90%", md: "80%", lg: '60%', xl: "580px" }}
+        p={{ base: "20px", md: "40px" }}
+      >
         <Stack spacing="24px">
           <Flex justifyContent="space-between" alignItems="center">
             <Heading fontSize="2xl">Sectors</Heading>
-            <Button fontSize="xs" width={{ md: "215px" }}>
-              <Link to={"/add-sector"}> Add New</Link>
+            <Button fontSize="sm" width={{ md: "215px" }}>
+            <Link to={"/add-sector"}> Add New</Link>
             </Button>
           </Flex>
 

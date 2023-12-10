@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import {
+  AddUserSectorPage,
   CreateChildSubSectorPage,
   CreateSectorPage,
   CreateSubSectorPage,
