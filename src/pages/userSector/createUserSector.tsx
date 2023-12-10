@@ -1,15 +1,15 @@
-import { Box, Button, Checkbox, Flex, Heading, Spinner, Stack, VStack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, Select, Spinner, Stack, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { boolean, object, string } from "yup";
 import Input from "../../customs/input";
 import { appStore } from "../../store";
 import { useNavigate } from "react-router-dom";
-import { postData } from "../../utils/helpers/request";
+import { getData, patchData, postData } from "../../utils/helpers/request";
 import { ReactComponent as Icon } from "../../svgs/login.svg";
 import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
-import { IUserSector } from "../../utils/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { convertToFirstNameLastName } from "../../utils/helpers";
+import { GenericResponse, Sector } from "../../utils/types/response";
 
 const CreateUserSector = () => {
   const store = appStore();
@@ -27,18 +27,25 @@ const CreateUserSector = () => {
     agreedTerms: boolean().required("Terms required"),
   });
 
-  const mutation = useMutation({
-    mutationFn: async (payload: IUserSector) => {
-      return await postData("/user-sectors", payload, store.authUser.token);
-    },
-    onSuccess: (response) => {
-      const res = response.response.data;
+  async function getSector(): Promise<GenericResponse> {
+    return await getData("/sectors", store.authUser.token);
+  }
 
-      if (res.statusCode === 200 || res.statusCode === 201) {
+  const getSectors = useQuery({ queryKey: ["get-all-sectors"], queryFn: getSector });
+  const sectors = getSectors?.data?.data;
+
+  const mutation = useMutation({
+    mutationFn: async (payload: any) => {
+      return firstName
+        ? await patchData(`/user-sectors/${userSector._id}`, payload, store.authUser.token)
+        : await postData("/user-sectors", payload, store.authUser.token);
+    },
+    onSuccess: (res) => {
+      if (res.status === 200 || res.status === 201) {
         toast.success("User sector created successfully");
 
-        store.setUserSector(res.data);
-        navigate("/update-user-sector");
+        store.setUserSector(res.data?.data);
+        navigate("/add-user-sector");
       } else {
         toast.error(res.message);
 
@@ -60,7 +67,7 @@ const CreateUserSector = () => {
         </VStack>
 
         <Heading my={3} textAlign={"center"}>
-          Add User To Sector
+          {firstName ? "Update user Sector" : "Add user Sector"}
         </Heading>
       </Box>
       <Box width={500} maxWidth={600} p={8} borderWidth={1} m={5} borderRadius={8} boxShadow="lg">
@@ -110,15 +117,33 @@ const CreateUserSector = () => {
                       type="text"
                     />
 
-                    <Input placeholder="sectors" label="Sectors" name="sector" type="text" />
+                    {!firstName && (
+                      <Stack spacing={3}>
+                        <Select
+                          placeholder="Select Sector"
+                          name="sector"
+                          onChange={props.handleChange("sector")}
+                          value={props.values.sector}
+                        >
+                          {sectors &&
+                            sectors.map((sector: Sector) => (
+                              <option key={sector._id} value={sector._id}>
+                                {sector.name}
+                              </option>
+                            ))}
+                        </Select>
+                      </Stack>
+                    )}
 
-                    <Checkbox
-                      isChecked={props.values.agreedTerms}
-                      onChange={() => props.setFieldValue("agreedTerms", !props.values.agreedTerms)}
-                      name="agreedTerms"
-                    >
-                      I agree to the Terms of use and Privacy Policy
-                    </Checkbox>
+                    {!firstName && (
+                      <Checkbox
+                        isChecked={props.values.agreedTerms}
+                        onChange={() => props.setFieldValue("agreedTerms", !props.values.agreedTerms)}
+                        name="agreedTerms"
+                      >
+                        I agree to the Terms of use and Privacy Policy
+                      </Checkbox>
+                    )}
 
                     {firstName ? (
                       <Button type="submit">{mutation.isPending ? <Spinner /> : "Update"}</Button>

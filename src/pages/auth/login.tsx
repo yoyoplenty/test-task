@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Spinner,
-  Stack,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spinner, Stack, Text, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { object, string } from "yup";
 import Input from "../../customs/input";
@@ -26,9 +17,7 @@ const Login = () => {
 
   const validationSchema = object({
     email: string().email().required("Email is required"),
-    password: string()
-      .required("Password is required")
-      .min(8, "Password must be at least 8 characters"),
+    password: string().required("Password is required").min(8, "Password must be at least 8 characters"),
   });
 
   const mutation = useMutation({
@@ -101,23 +90,11 @@ const Login = () => {
               <Form onSubmit={props.handleSubmit}>
                 <Box m={[5, 7]}>
                   <Stack gap="4">
-                    <Input
-                      placeholder="Email"
-                      name="email"
-                      label="Email Address"
-                      type="email"
-                    />
+                    <Input placeholder="Email" name="email" label="Email Address" type="email" />
 
-                    <Input
-                      placeholder="Password"
-                      name="password"
-                      label="Password"
-                      type="password"
-                    />
+                    <Input placeholder="Password" name="password" label="Password" type="password" />
 
-                    <Button type="submit">
-                      {mutation.isPending ? <Spinner /> : "Login"}
-                    </Button>
+                    <Button type="submit">{mutation.isPending ? <Spinner /> : "Login"}</Button>
                   </Stack>
                 </Box>
               </Form>

@@ -11,7 +11,11 @@ export interface IUser {
 }
 
 export interface IUserSector {
+  _id: string;
   name: string;
+  user?: string;
   sector: string;
   agreedTerms: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

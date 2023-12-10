@@ -14,7 +14,7 @@ type Store = {
   setAuthUser: (authUser: IUser | {}) => void;
   setParentSector: (sector: Sector) => void;
   setSubSector: (subSector: Sector) => void;
-  setUserSector: (userSector: IUserSector) => void;
+  setUserSector: (userSector: IUserSector | any) => void;
 };
 
 const useStore = create<Store>((set) => ({

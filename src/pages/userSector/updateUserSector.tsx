@@ -16,6 +16,9 @@ const UpdateUserSector = () => {
   const navigate = useNavigate();
 
   const userSector = store.userSector;
+  const { firstName = null, lastName = null } = userSector?.name
+    ? convertToFirstNameLastName(userSector.name) ?? {}
+    : {};
 
   const validationSchema = object({
     firstName: string().optional(),
@@ -62,19 +65,15 @@ const UpdateUserSector = () => {
           enableReinitialize
           validateOnMount
           initialValues={{
-            firstName: "",
-            lastName: "",
-            sector: "",
-            agreedTerms: false,
+            firstName,
+            lastName,
           }}
           validationSchema={validationSchema}
           onSubmit={async (values: any) => {
-            let { firstName, lastName } = convertToFirstNameLastName(userSector.name);
+            const name1 = firstName | values.firstName;
+            const name2 = lastName | values.lastName;
 
-            firstName = firstName | values.firstName;
-            lastName = lastName | values.lastName;
-
-            const payload = { name: firstName + " " + lastName };
+            const payload = { name: name1 + " " + name2 };
 
             await mutation.mutate(payload);
           }}
@@ -84,9 +83,9 @@ const UpdateUserSector = () => {
               <Form onSubmit={props.handleSubmit}>
                 <Box m={[5, 7]}>
                   <Stack gap="4">
-                    <Input placeholder={userSector.firstName} name="firstName" label="First Name" type="text" />
+                    <Input placeholder="firstName" name="firstName" label="First Name" type="text" />
 
-                    <Input placeholder={userSector.lastName} name="lastName" label="Last Name" type="text" />
+                    <Input placeholder="lastName" name="lastName" label="Last Name" type="text" />
 
                     <Button type="submit">{mutation.isPending ? <Spinner /> : "Save Changes"}</Button>
                   </Stack>

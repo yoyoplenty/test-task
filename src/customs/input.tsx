@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Button,
   FormControl,
@@ -7,9 +6,9 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-} from '@chakra-ui/react';
-import { Field, type FieldProps } from 'formik';
-import { useState } from 'react';
+} from "@chakra-ui/react";
+import { Field, type FieldProps } from "formik";
+import { useState } from "react";
 
 interface Props {
   name: string;
@@ -30,22 +29,19 @@ const TextInput = (props: Props) => {
   return (
     <Field name={name}>
       {({ field, form }: FieldProps) => (
-        <FormControl
-          isInvalid={!!(form.touched[name] && form.errors[name])}
-          minH="60px"
-        >
+        <FormControl isInvalid={!!(form.touched[name] && form.errors[name])} minH="60px">
           <FormLabel>{label}</FormLabel>
 
           <InputGroup>
             <Input
               {...field}
               placeholder={placeholder}
-              variant={variant || 'outline'}
-              fontSize={{ base: 'md' }}
-              _placeholder={{ fontSize: 'xs', color: '#CBD5E1' }}
+              variant={variant || "outline"}
+              fontSize={{ base: "md" }}
+              _placeholder={{ fontSize: "xs", color: "#CBD5E1" }}
               _focus={{
-                borderColor: 'transparent',
-                boxShadow: '0 0 5px #ACC9F1',
+                borderColor: "transparent",
+                boxShadow: "0 0 5px #ACC9F1",
               }}
               type={handleType(type, show)}
               disabled={disabled}
@@ -54,8 +50,7 @@ const TextInput = (props: Props) => {
               height="40px"
               minW={w}
             />
-
-            {type === 'password' && (
+            {type === "password" && (
               <InputRightElement width="3.5rem">
                 <Button
                   variant="ghost"
@@ -66,16 +61,14 @@ const TextInput = (props: Props) => {
                   onClick={() => setShow(!show)}
                   color="brand.100"
                 >
-                  {show ? 'Hide' : 'Show'}
+                  {show ? "Hide" : "Show"}
                 </Button>
               </InputRightElement>
             )}
           </InputGroup>
 
           {form.touched[name] && form.errors[name] && (
-            <FormErrorMessage fontSize="small">
-              {form.errors[name] as any}
-            </FormErrorMessage>
+            <FormErrorMessage fontSize="small">{form.errors[name] as any}</FormErrorMessage>
           )}
         </FormControl>
       )}
@@ -86,11 +79,11 @@ const TextInput = (props: Props) => {
 export default TextInput;
 
 const handleType = (type: string, show: boolean) => {
-  if (type == 'password') {
+  if (type === "password") {
     if (show) {
-      return 'text';
+      return "text";
     } else {
-      return 'password';
+      return "password";
     }
   } else {
     return type;
