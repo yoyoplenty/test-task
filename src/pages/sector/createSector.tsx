@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
-import { Formik } from "formik";
+import { Form, Formik } from "formik";
 import { object, string } from "yup";
 import Input from "../../customs/input";
 import { ReactComponent as Icon } from "../../svgs/login.svg";
@@ -60,7 +60,7 @@ const CreateSector = () => {
         >
           {(props) => {
             return (
-              <form onSubmit={props.handleSubmit}>
+              <Form onSubmit={props.handleSubmit}>
                 <Box m={[5, 7]}>
                   <Stack gap="4">
                     <Input placeholder="Sector Name" name="name" label="Sector Name" type="text" />
@@ -68,7 +68,7 @@ const CreateSector = () => {
                     <Button type="submit">Add Sector</Button>
                   </Stack>
                 </Box>
-              </form>
+              </Form>
             );
           }}
         </Formik>

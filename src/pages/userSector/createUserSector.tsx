@@ -1,47 +1,69 @@
-import { Box, Button, Checkbox, Flex, Stack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { boolean, object, string } from "yup";
 import Input from "../../customs/input";
 import { appStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { postData } from "../../utils/helpers/request";
+import { ReactComponent as Icon } from "../../svgs/login.svg";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { IUserSector } from "../../utils/types";
 import { convertToFirstNameLastName } from "../../utils/helpers";
 
-const Create = () => {
+const CreateUserSector = () => {
   const store = appStore();
-
-  const userSector = store.userSector;
-  const { firstName, lastName } = convertToFirstNameLastName(userSector?.name);
 
   const navigate = useNavigate();
 
-  const mutation = useMutation({
-    mutationFn: async (payload: IUserSector) => {
-      return await postData("/user-sectors", payload);
-    },
-    onSuccess: (data) => {
-      toast.success("User sector created successfully");
-
-      store.setUserSector(data.data);
-      navigate("/sectors");
-    },
-    onError: (error) => {
-      console.error("Mutation error:", error);
-    },
-  });
+  const userSector = store.userSector;
+  const { firstName = null, lastName = null } = userSector?.name
+    ? convertToFirstNameLastName(userSector.name) ?? {}
+    : {};
 
   const validationSchema = object({
     firstName: string().required("First Name is required"),
     lastName: string().required("Last Name is required"),
     sector: string().required("Sector is required"),
-    agreedTerms: boolean().required(),
+    agreedTerms: boolean().required("Terms required"),
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (payload: IUserSector) => {
+      return await postData("/user-sectors", payload);
+    },
+    onSuccess: (response) => {
+      const res = response.response.data;
+
+      if (res.statusCode === 200 || res.statusCode === 201) {
+        toast.success("User sector created successfully");
+
+        store.setUserSector(res.data);
+        navigate("/sector");
+      } else {
+        toast.error(res.message);
+
+        navigate("/add-user-sector");
+      }
+    },
+    onError: (error) => {
+      toast.error("Unable to create user sector");
+
+      navigate(-1);
+    },
   });
 
   return (
-    <Flex minHeight="100vh" align="center" justify="center">
+    <Flex minHeight="100vh" align="center" justify="center" direction="column">
+      <Box m={3}>
+        <VStack>
+          <Icon />
+        </VStack>
+
+        <Heading my={3} textAlign={"center"}>
+          Add User To Sector
+        </Heading>
+      </Box>
       <Box width={500} maxWidth={600} p={8} borderWidth={1} m={5} borderRadius={8} boxShadow="lg">
         <Formik
           enableReinitialize
@@ -50,10 +72,17 @@ const Create = () => {
             firstName: "",
             lastName: "",
             sector: "",
-            agreedTerms: "",
+            agreedTerms: false,
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values: any) => {
+          onSubmit={async (values: any, { setSubmitting }) => {
+            if (!values.agreedTerms) {
+              toast.error("Please agree to the Terms of use and Privacy Policy");
+
+              setSubmitting(false);
+              return;
+            }
+
             const payload = {
               name: values.firstName + " " + values.lastName,
               sector: values.sector,
@@ -84,11 +113,21 @@ const Create = () => {
 
                     <Input placeholder="sectors" label="Sectors" name="sector" type="text" />
 
-                    <Checkbox defaultChecked name="agreedTerms">
-                      I agree to to the Terms of use and Privacy Policy
+                    <Checkbox
+                      isChecked={props.values.agreedTerms}
+                      onChange={() => props.setFieldValue("agreedTerms", !props.values.agreedTerms)}
+                      name="agreedTerms"
+                    >
+                      I agree to the Terms of use and Privacy Policy
                     </Checkbox>
 
-                    <Button type="submit">Save</Button>
+                    {firstName ? (
+                      <Button type="submit">Update</Button>
+                    ) : (
+                      <Button type="submit" disabled>
+                        Save
+                      </Button>
+                    )}
                   </Stack>
                 </Box>
               </Form>
@@ -100,4 +139,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default CreateUserSector;

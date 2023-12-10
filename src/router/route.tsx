@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import {
-  AddUserSectorPage,
   CreateChildSubSectorPage,
   CreateSectorPage,
   CreateSubSectorPage,
+  CreateUserSectorPage,
   DisplayChildSubSectorPage,
   DisplaySectorPage,
   DisplaySubSectorPage,
@@ -19,10 +19,11 @@ const routes = createBrowserRouter([
       { index: true, element: <LoginPage /> },
       { path: "sector", element: <DisplaySectorPage /> },
       { path: "sub-sector", element: <DisplaySubSectorPage /> },
-      { path: "child-sub-sector", element: <DisplayChildSubSectorPage /> },
       { path: "add-sector", element: <CreateSectorPage /> },
       { path: "add-sub-sector", element: <CreateSubSectorPage /> },
+      { path: "child-sub-sector", element: <DisplayChildSubSectorPage /> },
       { path: "add-child-sub-sector", element: <CreateChildSubSectorPage /> },
+      { path: "add-user-sector", element: <CreateUserSectorPage /> },
     ],
   },
 ]);

@@ -3,17 +3,53 @@ import { Form, Formik } from "formik";
 import { object, string } from "yup";
 import Input from "../../customs/input";
 import { ReactComponent as Icon } from "../../svgs/login.svg";
+import { useNavigate } from "react-router-dom";
+import { postData } from "../../utils/helpers/request";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { getCurrentUser } from "../../utils/storage/data";
+import { setLocalStorage } from "../../utils/storage";
+import { appStore } from "../../store";
 
 const Login = () => {
+  const store = appStore();
+  const navigate = useNavigate();
+
+  //TODO check if user is loggedIn and also an ADMIN
+
   const validationSchema = object({
     email: string().email().required("Email is required"),
-    password: string()
-      .required("Password is required")
-      .min(8, "Password must be at least 8 characters")
-      .matches(/[A-Z]/, "Password must contain an uppercase letter")
-      .matches(/[a-z]/, "Password must contain a lowercase letter")
-      .matches(/[0-9]/, "Password must contain a number")
-      .matches(/[~!@#$%^&*()_+=-]/, "Password must contain a special character"),
+    password: string().required("Password is required").min(8, "Password must be at least 8 characters"),
+  });
+
+  const mutation = useMutation({
+    mutationFn: async (payload: any) => {
+      return await postData("/auth/login", payload);
+    },
+    onSuccess: (res) => {
+      const data = res?.data?.data;
+
+      const user = Object.assign(data.user, { accessToken: data.accessToken });
+
+      setLocalStorage("user", user);
+      store.setAuthUser(getCurrentUser());
+
+      if (res.status === 200 || res.status === 201) {
+        toast.success("User logged in successfully");
+
+        if (data?.user?.role === "admin") navigate("/sector");
+        else navigate("/add-user-sector");
+      } else {
+        toast.error(res.message);
+
+        navigate("/");
+      }
+    },
+    onError: (error) => {
+      toast.error("Unable to login");
+
+      navigate("/");
+    },
   });
 
   return (
@@ -48,18 +84,20 @@ const Login = () => {
             password: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {}}
+          onSubmit={async (values: any) => {
+            await mutation.mutate(values);
+          }}
         >
           {(props) => {
             return (
-              <Form>
+              <Form onSubmit={props.handleSubmit}>
                 <Box m={[5, 7]}>
                   <Stack gap="4">
                     <Input placeholder="Email" name="email" label="Email Address" type="email" />
 
                     <Input placeholder="Password" name="password" label="Password" type="password" />
 
-                    <Button>Login</Button>
+                    <Button type="submit">Login</Button>
                   </Stack>
                 </Box>
               </Form>
