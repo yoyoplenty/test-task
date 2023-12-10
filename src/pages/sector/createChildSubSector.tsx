@@ -6,7 +6,7 @@ import { ReactComponent as Icon } from "../../svgs/login.svg";
 import { useQuery } from "@tanstack/react-query";
 import { getData, postData } from "../../utils/helpers/request";
 import { useMutation } from "@tanstack/react-query";
-import { GenericResponse, Sector } from "../../types/response";
+import { GenericResponse, Sector } from "../../utils/types/response";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 

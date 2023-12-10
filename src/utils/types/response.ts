@@ -1,4 +1,4 @@
-import { IUser } from "./user";
+import { IUser } from ".";
 
 type LoginData = {
   accessToken: string;

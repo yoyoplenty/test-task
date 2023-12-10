@@ -7,7 +7,7 @@ import { ReactComponent as ArrowLeft } from "../../svgs/arrow-left.svg";
 import { appStore } from "../../store";
 import { getData } from "../../utils/helpers/request";
 import { useQuery } from "@tanstack/react-query";
-import { GenericResponse, Sector } from "../../types/response";
+import { GenericResponse, Sector } from "../../utils/types/response";
 import { Link } from "react-router-dom";
 
 const DisplayChildSubSector = () => {

@@ -7,7 +7,7 @@ import { getData } from "../../utils/helpers/request";
 import { useMutation } from "@tanstack/react-query";
 import { postData } from "../../utils/helpers/request";
 import { useQuery } from "@tanstack/react-query";
-import { GenericResponse, Sector } from "../../types/response";
+import { GenericResponse, Sector } from "../../utils/types/response";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 

@@ -5,7 +5,7 @@ import { Card } from "@chakra-ui/card";
 import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
 import { ReactComponent as Arrow } from "../../svgs/arrow-right.svg";
 import { getData } from "../../utils/helpers/request";
-import { GenericResponse, Sector } from "../../types/response";
+import { GenericResponse, Sector } from "../../utils/types/response";
 import { appStore } from "../../store";
 import { Link } from "react-router-dom";
 
