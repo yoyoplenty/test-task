@@ -8,6 +8,7 @@ import {
   DisplaySectorPage,
   DisplaySubSectorPage,
   LoginPage,
+  UpdateUserSectorPage,
 } from "../pages";
 import { RootLayout } from "../layout";
 import { AuthorizeUser } from "../utils/middleware/auth";
@@ -71,6 +72,14 @@ const routes = createBrowserRouter([
         element: (
           <AuthorizeUser>
             <CreateUserSectorPage />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "update-user-sector",
+        element: (
+          <AuthorizeUser>
+            <UpdateUserSectorPage />
           </AuthorizeUser>
         ),
       },

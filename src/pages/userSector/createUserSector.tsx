@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Heading, Spinner, Stack, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { boolean, object, string } from "yup";
 import Input from "../../customs/input";
@@ -38,7 +38,7 @@ const CreateUserSector = () => {
         toast.success("User sector created successfully");
 
         store.setUserSector(res.data);
-        navigate("/sector");
+        navigate("/update-user-sector");
       } else {
         toast.error(res.message);
 
@@ -121,11 +121,9 @@ const CreateUserSector = () => {
                     </Checkbox>
 
                     {firstName ? (
-                      <Button type="submit">Update</Button>
+                      <Button type="submit">{mutation.isPending ? <Spinner /> : "Update"}</Button>
                     ) : (
-                      <Button type="submit" disabled>
-                        Save
-                      </Button>
+                      <Button type="submit">{mutation.isPending ? <Spinner /> : "Save"}</Button>
                     )}
                   </Stack>
                 </Box>
