@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Box, Button, Flex, Heading, Stack, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Spinner, Stack, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { object, string } from "yup";
 import Input from "../../customs/input";
@@ -75,7 +75,7 @@ const CreateSector = () => {
                   <Stack gap="4">
                     <Input placeholder="Sector Name" name="name" label="Sector Name" type="text" />
 
-                    <Button type="submit">Add Sector</Button>
+                    <Button type="submit">{mutation.isPending ? <Spinner /> : "Add Sector"}</Button>
                   </Stack>
                 </Box>
               </Form>
