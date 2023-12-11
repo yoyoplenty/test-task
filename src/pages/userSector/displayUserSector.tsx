@@ -21,7 +21,7 @@ const DisplayUserSector = () => {
 
   return (
     <Box>
-      <Flex mt="40px" ms="100px" direction="column" alignItems="flex-start" gap="4">
+      <Flex m={[4, 8]} direction="column" alignItems="flex-start" gap="4">
         <Text as="b" fontSize="xl">
           {user && `${user.firstName} ${user.lastName}`}
         </Text>
