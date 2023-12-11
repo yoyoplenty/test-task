@@ -38,12 +38,18 @@ const CreateSubSector = () => {
 
   const mutation = useMutation({
     mutationFn: async (payload) => {
-      return await postData("/sectors", payload);
+      return await postData("/sectors", payload, store.authUser.token);
     },
-    onSuccess: (data) => {
-      toast.success("Sub Sector created successfully");
+    onSuccess: (res) => {
+      if (res.status === 200 || res.status === 201) {
+        toast.success("Sub Sector created successfully");
 
-      navigate("/add-child-sub-sector");
+        navigate("/add-child-sub-sector");
+      } else {
+        toast.error(res.message);
+
+        navigate("/add-sub-sector");
+      }
     },
     onError: (error) => {
       console.error("Mutation error:", error);
@@ -86,7 +92,12 @@ const CreateSubSector = () => {
                   <Stack gap="4">
                     <Text size={"md"}>Parent Sector</Text>
                     <Stack spacing={3}>
-                      <Select placeholder="Parent Sector">
+                      <Select
+                        placeholder="Parent Sector"
+                        name="parentSector"
+                        onChange={props.handleChange("parentSector")}
+                        value={props.values.parentSector}
+                      >
                         {parentSectors &&
                           parentSectors.map((parentSector: Sector) => (
                             <option key={parentSector._id} value={parentSector._id}>

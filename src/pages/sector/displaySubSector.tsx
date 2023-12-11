@@ -1,8 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Card } from "@chakra-ui/card";
-import { Box, Flex, HStack, Heading, Stack, Text } from "@chakra-ui/layout";
-import { ReactComponent as Delete } from "../../svgs/delete.svg";
-import { ReactComponent as Edit } from "../../svgs/edit.svg";
+import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
 import { ReactComponent as ArrowLeft } from "../../svgs/arrow-left.svg";
 import { appStore } from "../../store";
 import { getData } from "../../utils/helpers/request";
@@ -64,26 +62,21 @@ const DisplaySubSector = () => {
               </Button>
             </Flex>
 
-            {subSectors?.map((item: Sector) => (
-              <Box
-                border="1px solid rgba(123, 123, 123, 0.50)"
-                p="16px"
-                borderRadius="8px"
-                key={item._id}
-                cursor={"pointer"}
-                onClick={() => handleGetChildSubSectors(item)}
-              >
-                <Flex justifyContent="space-between" alignItems="center">
-                  <Text>{item.name}</Text>
-
-                  <HStack>
-                    <Button variant="ghosted">
-                      <Delete />
-                    </Button>
-                  </HStack>
-                </Flex>
-              </Box>
-            ))}
+            {subSectors &&
+              subSectors?.map((item: Sector) => (
+                <Box
+                  border="1px solid rgba(123, 123, 123, 0.50)"
+                  p="16px"
+                  borderRadius="8px"
+                  key={item._id}
+                  cursor={"pointer"}
+                  onClick={() => handleGetChildSubSectors(item)}
+                >
+                  <Flex justifyContent="space-between" alignItems="center">
+                    <Text>{item.name}</Text>
+                  </Flex>
+                </Box>
+              ))}
           </Stack>
         </Card>
       </Flex>
