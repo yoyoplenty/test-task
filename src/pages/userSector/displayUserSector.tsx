@@ -12,6 +12,8 @@ const DisplayUserSector = () => {
 
   const user = store.authUser;
 
+  console.log(user);
+
   async function getUserSector(): Promise<GenericResponse> {
     return await getData(`/user-sectors`, store.authUser.token);
   }
@@ -23,7 +25,7 @@ const DisplayUserSector = () => {
     <Box>
       <Flex mt="40px" ms="100px" direction="column" alignItems="flex-start" gap="4">
         <Text as="b" fontSize="xl">
-          {user && user?.name}
+          {user && `${user.firstName} ${user.lastName}`}
         </Text>
       </Flex>
 
