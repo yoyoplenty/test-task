@@ -28,7 +28,7 @@ const CreateUserSector = () => {
   });
 
   async function getSector(): Promise<GenericResponse> {
-    return await getData("/sectors", store.authUser.token);
+    return await getData("/sectors/parent-with-sub", store.authUser.token);
   }
 
   const getSectors = useQuery({ queryKey: ["get-all-sectors"], queryFn: getSector });
@@ -84,14 +84,18 @@ const CreateUserSector = () => {
           onSubmit={async (values: any, { setSubmitting }) => {
             if (!values.agreedTerms) {
               toast.error("Please agree to the Terms of use and Privacy Policy");
-
               setSubmitting(false);
               return;
             }
 
+            let selectedSectorId = values.sector;
+
+            if (values.childSubSector) selectedSectorId = values.childSubSector;
+            else if (values.subSector) selectedSectorId = values.subSector;
+
             const payload = {
               name: values.firstName + " " + values.lastName,
-              sector: values.sector,
+              sector: selectedSectorId,
               agreedTerms: values.agreedTerms,
             };
 
@@ -118,11 +122,16 @@ const CreateUserSector = () => {
                     />
 
                     {!firstName && (
-                      <Stack spacing={3}>
+                      <>
+                        {/* Sector Select */}
                         <Select
                           placeholder="Select Sector"
                           name="sector"
-                          onChange={props.handleChange("sector")}
+                          onChange={(e) => {
+                            props.handleChange("sector")(e);
+                            props.setFieldValue("subSector", "");
+                            props.setFieldValue("childSubSector", "");
+                          }}
                           value={props.values.sector}
                         >
                           {sectors &&
@@ -132,7 +141,52 @@ const CreateUserSector = () => {
                               </option>
                             ))}
                         </Select>
-                      </Stack>
+
+                        {/* Sub-Sector Select */}
+                        {props.values.sector &&
+                          sectors.find((s: Sector) => s._id === props.values.sector)?.subSectors.length > 0 && (
+                            <Select
+                              placeholder="Select Sub-Sector"
+                              name="subSector"
+                              onChange={(e) => {
+                                props.handleChange("subSector")(e);
+                                props.setFieldValue("childSubSector", ""); // Reset childSubSector value
+                              }}
+                              value={props.values.subSector}
+                            >
+                              {sectors
+                                .find((s: Sector) => s._id === props.values.sector)
+                                ?.subSectors.map((subSector: Sector) => (
+                                  <option key={subSector._id} value={subSector._id}>
+                                    {subSector.name}
+                                  </option>
+                                ))}
+                            </Select>
+                          )}
+
+                        {/* Child Sub-Sector Select */}
+                        {props.values.subSector &&
+                          sectors
+                            .find((s: Sector) => s._id === props.values.sector)
+                            ?.subSectors.find((ss: Sector) => ss._id === props.values.subSector)?.subSectors.length >
+                            0 && (
+                            <Select
+                              placeholder="Select Child Sub-Sector"
+                              name="childSubSector"
+                              onChange={props.handleChange("childSubSector")}
+                              value={props.values.childSubSector}
+                            >
+                              {sectors
+                                .find((s: Sector) => s._id === props.values.sector)
+                                ?.subSectors.find((ss: Sector) => ss._id === props.values.subSector)
+                                ?.subSectors.map((childSubSector: Sector) => (
+                                  <option key={childSubSector._id} value={childSubSector._id}>
+                                    {childSubSector.name}
+                                  </option>
+                                ))}
+                            </Select>
+                          )}
+                      </>
                     )}
 
                     {!firstName && (
