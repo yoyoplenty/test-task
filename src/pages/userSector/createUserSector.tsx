@@ -63,7 +63,7 @@ const CreateUserSector = () => {
 
   return (
     <Box>
-      <Flex mt={[4, 8]} ms="100px" direction="column" alignItems="flex-start" gap="4">
+      <Flex m={[4, 8]} direction="column" alignItems="flex-start" gap="4">
         <Button variant="ghosted" color="#4197E8" fontWeight="400" fontSize="md" ps="0" display="flex" gap="2">
           <ArrowLeft />
           <Text>
@@ -82,7 +82,7 @@ const CreateUserSector = () => {
             {firstName ? "Update user Sector" : "Add user Sector"}
           </Heading>
         </Box>
-        <Box width={500} maxWidth={600} p={8} borderWidth={1} m={5} borderRadius={8} boxShadow="lg">
+        <Box p={[2, 8]} borderWidth={1} m={[2, 5]} borderRadius={8} boxShadow="lg">
           <Formik
             enableReinitialize
             validateOnMount
