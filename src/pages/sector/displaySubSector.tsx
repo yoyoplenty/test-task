@@ -43,7 +43,9 @@ const DisplaySubSector = () => {
       <Flex mt="40px" ms="100px" direction="column" alignItems="flex-start" gap="4">
         <Button variant="ghosted" color="#4197E8" fontWeight="400" fontSize="md" ps="0" display="flex" gap="2">
           <ArrowLeft />
-          <Text>Go Back</Text>
+          <Text>
+            <Link to={"/sector"}>Go Back</Link>
+          </Text>
         </Button>
 
         <Text as="b" fontSize="xl">
@@ -77,10 +79,6 @@ const DisplaySubSector = () => {
                   <HStack>
                     <Button variant="ghosted">
                       <Delete />
-                    </Button>
-
-                    <Button variant="ghosted">
-                      <Edit />
                     </Button>
                   </HStack>
                 </Flex>

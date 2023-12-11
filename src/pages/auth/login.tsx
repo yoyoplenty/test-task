@@ -17,7 +17,7 @@ const Login = () => {
 
   const validationSchema = object({
     email: string().email().required("Email is required"),
-    password: string().required("Password is required").min(8, "Password must be at least 8 characters"),
+    password: string().required("Password is required").min(6, "Password must be at least 6 characters"),
   });
 
   const mutation = useMutation({
