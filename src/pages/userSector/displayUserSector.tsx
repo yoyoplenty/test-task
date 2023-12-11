@@ -12,8 +12,6 @@ const DisplayUserSector = () => {
 
   const user = store.authUser;
 
-  console.log(user);
-
   async function getUserSector(): Promise<GenericResponse> {
     return await getData(`/user-sectors`, store.authUser.token);
   }
