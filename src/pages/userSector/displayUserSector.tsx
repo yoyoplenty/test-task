@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Button } from "@chakra-ui/button";
 import { Card } from "@chakra-ui/card";
 import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
@@ -7,20 +6,12 @@ import { appStore } from "../../store";
 import { getData } from "../../utils/helpers/request";
 import { useQuery } from "@tanstack/react-query";
 import { GenericResponse } from "../../utils/types/response";
-import { Link, useNavigate } from "react-router-dom";
-import { authorizeUserRole } from "../../utils/middleware/auth";
+import { Link } from "react-router-dom";
 
 const DisplayUserSector = () => {
   const store = appStore();
-  const navigate = useNavigate();
 
   const user = store.authUser;
-
-  const isAuthorized = authorizeUserRole();
-
-  useEffect(() => {
-    if (!isAuthorized) navigate("/");
-  }, [isAuthorized, navigate]);
 
   async function getUserSector(): Promise<GenericResponse> {
     return await getData(`/user-sectors`, store.authUser.token);
