@@ -35,7 +35,7 @@ const Login = () => {
         toast.success("User logged in successfully");
 
         if (data?.user?.role === "admin") navigate("/sector");
-        else navigate("/add-user-sector");
+        else navigate("/user-sector");
       } else {
         toast.error(res.message);
 

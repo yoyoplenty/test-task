@@ -5,4 +5,5 @@ export { default as DisplayChildSubSectorPage } from "./sector/displayChildSubSe
 export { default as CreateSectorPage } from "./sector/createSector";
 export { default as CreateSubSectorPage } from "./sector/createSubSector ";
 export { default as CreateChildSubSectorPage } from "./sector/createChildSubSector";
+export { default as DisplayUserSectorPage } from "./userSector/displayUserSector";
 export { default as CreateUserSectorPage } from "./userSector/createUserSector";

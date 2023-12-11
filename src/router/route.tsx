@@ -7,6 +7,7 @@ import {
   DisplayChildSubSectorPage,
   DisplaySectorPage,
   DisplaySubSectorPage,
+  DisplayUserSectorPage,
   LoginPage,
 } from "../pages";
 import { RootLayout } from "../layout";
@@ -63,6 +64,14 @@ const routes = createBrowserRouter([
         element: (
           <AuthorizeUser>
             <CreateChildSubSectorPage />
+          </AuthorizeUser>
+        ),
+      },
+      {
+        path: "user-sector",
+        element: (
+          <AuthorizeUser>
+            <DisplayUserSectorPage />
           </AuthorizeUser>
         ),
       },
