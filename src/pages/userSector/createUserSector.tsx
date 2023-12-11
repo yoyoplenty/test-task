@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, Heading, Select, Spinner, Stack, VStack } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Text, Heading, Select, Spinner, Stack, VStack } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { boolean, object, string } from "yup";
 import Input from "../../customs/input";
@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { convertToFirstNameLastName } from "../../utils/helpers";
 import { GenericResponse, Sector } from "../../utils/types/response";
+import { Link } from "react-router-dom";
+import { ReactComponent as ArrowLeft } from "../../svgs/arrow-left.svg";
 
 const CreateUserSector = () => {
   const store = appStore();
@@ -60,158 +62,169 @@ const CreateUserSector = () => {
   });
 
   return (
-    <Flex minHeight="100vh" align="center" justify="center" direction="column">
-      <Box m={3}>
-        <VStack>
-          <Icon />
-        </VStack>
+    <Box>
+      <Flex mt={[4, 8]} ms="100px" direction="column" alignItems="flex-start" gap="4">
+        <Button variant="ghosted" color="#4197E8" fontWeight="400" fontSize="md" ps="0" display="flex" gap="2">
+          <ArrowLeft />
+          <Text>
+            <Link to={"/user-sector"}>User sector</Link>
+          </Text>
+        </Button>
+      </Flex>
 
-        <Heading my={3} textAlign={"center"}>
-          {firstName ? "Update user Sector" : "Add user Sector"}
-        </Heading>
-      </Box>
-      <Box width={500} maxWidth={600} p={8} borderWidth={1} m={5} borderRadius={8} boxShadow="lg">
-        <Formik
-          enableReinitialize
-          validateOnMount
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            sector: "",
-            agreedTerms: false,
-          }}
-          validationSchema={validationSchema}
-          onSubmit={async (values: any, { setSubmitting }) => {
-            if (!values.agreedTerms) {
-              toast.error("Please agree to the Terms of use and Privacy Policy");
-              setSubmitting(false);
-              return;
-            }
+      <Flex my={5} align="center" justify="center" direction="column">
+        <Box m={3}>
+          <VStack>
+            <Icon />
+          </VStack>
 
-            let selectedSectorId = values.sector;
+          <Heading my={3} textAlign={"center"}>
+            {firstName ? "Update user Sector" : "Add user Sector"}
+          </Heading>
+        </Box>
+        <Box width={500} maxWidth={600} p={8} borderWidth={1} m={5} borderRadius={8} boxShadow="lg">
+          <Formik
+            enableReinitialize
+            validateOnMount
+            initialValues={{
+              firstName: "",
+              lastName: "",
+              sector: "",
+              agreedTerms: false,
+            }}
+            validationSchema={validationSchema}
+            onSubmit={async (values: any, { setSubmitting }) => {
+              if (!values.agreedTerms) {
+                toast.error("Please agree to the Terms of use and Privacy Policy");
+                setSubmitting(false);
+                return;
+              }
 
-            if (values.childSubSector) selectedSectorId = values.childSubSector;
-            else if (values.subSector) selectedSectorId = values.subSector;
+              let selectedSectorId = values.sector;
 
-            const payload = {
-              name: values.firstName + " " + values.lastName,
-              sector: selectedSectorId,
-              agreedTerms: values.agreedTerms,
-            };
+              if (values.childSubSector) selectedSectorId = values.childSubSector;
+              else if (values.subSector) selectedSectorId = values.subSector;
 
-            await mutation.mutate(payload);
-          }}
-        >
-          {(props) => {
-            return (
-              <Form onSubmit={props.handleSubmit}>
-                <Box m={[5, 7]}>
-                  <Stack gap="4">
-                    <Input
-                      placeholder={firstName ? firstName : "First Name"}
-                      name="firstName"
-                      label="First Name"
-                      type="text"
-                    />
+              const payload = {
+                name: values.firstName + " " + values.lastName,
+                sector: selectedSectorId,
+                agreedTerms: values.agreedTerms,
+              };
 
-                    <Input
-                      placeholder={lastName ? lastName : "Last Name"}
-                      name="lastName"
-                      label="Last Name"
-                      type="text"
-                    />
+              await mutation.mutate(payload);
+            }}
+          >
+            {(props) => {
+              return (
+                <Form onSubmit={props.handleSubmit}>
+                  <Box m={[5, 7]}>
+                    <Stack gap="4">
+                      <Input
+                        placeholder={firstName ? firstName : "First Name"}
+                        name="firstName"
+                        label="First Name"
+                        type="text"
+                      />
 
-                    {!firstName && (
-                      <>
-                        {/* Sector Select */}
-                        <Select
-                          placeholder="Select Sector"
-                          name="sector"
-                          onChange={(e) => {
-                            props.handleChange("sector")(e);
-                            props.setFieldValue("subSector", "");
-                            props.setFieldValue("childSubSector", "");
-                          }}
-                          value={props.values.sector}
+                      <Input
+                        placeholder={lastName ? lastName : "Last Name"}
+                        name="lastName"
+                        label="Last Name"
+                        type="text"
+                      />
+
+                      {!firstName && (
+                        <>
+                          {/* Sector Select */}
+                          <Select
+                            placeholder="Select Sector"
+                            name="sector"
+                            onChange={(e) => {
+                              props.handleChange("sector")(e);
+                              props.setFieldValue("subSector", "");
+                              props.setFieldValue("childSubSector", "");
+                            }}
+                            value={props.values.sector}
+                          >
+                            {sectors &&
+                              sectors.map((sector: Sector) => (
+                                <option key={sector._id} value={sector._id}>
+                                  {sector.name}
+                                </option>
+                              ))}
+                          </Select>
+
+                          {/* Sub-Sector Select */}
+                          {props.values.sector &&
+                            sectors.find((s: Sector) => s._id === props.values.sector)?.subSectors.length > 0 && (
+                              <Select
+                                placeholder="Select Sub-Sector"
+                                name="subSector"
+                                onChange={(e) => {
+                                  props.handleChange("subSector")(e);
+                                  props.setFieldValue("childSubSector", ""); // Reset childSubSector value
+                                }}
+                                value={props.values.subSector}
+                              >
+                                {sectors
+                                  .find((s: Sector) => s._id === props.values.sector)
+                                  ?.subSectors.map((subSector: Sector) => (
+                                    <option key={subSector._id} value={subSector._id}>
+                                      {subSector.name}
+                                    </option>
+                                  ))}
+                              </Select>
+                            )}
+
+                          {/* Child Sub-Sector Select */}
+                          {props.values.subSector &&
+                            sectors
+                              .find((s: Sector) => s._id === props.values.sector)
+                              ?.subSectors.find((ss: Sector) => ss._id === props.values.subSector)?.subSectors.length >
+                              0 && (
+                              <Select
+                                placeholder="Select Child Sub-Sector"
+                                name="childSubSector"
+                                onChange={props.handleChange("childSubSector")}
+                                value={props.values.childSubSector}
+                              >
+                                {sectors
+                                  .find((s: Sector) => s._id === props.values.sector)
+                                  ?.subSectors.find((ss: Sector) => ss._id === props.values.subSector)
+                                  ?.subSectors.map((childSubSector: Sector) => (
+                                    <option key={childSubSector._id} value={childSubSector._id}>
+                                      {childSubSector.name}
+                                    </option>
+                                  ))}
+                              </Select>
+                            )}
+                        </>
+                      )}
+
+                      {!firstName && (
+                        <Checkbox
+                          isChecked={props.values.agreedTerms}
+                          onChange={() => props.setFieldValue("agreedTerms", !props.values.agreedTerms)}
+                          name="agreedTerms"
                         >
-                          {sectors &&
-                            sectors.map((sector: Sector) => (
-                              <option key={sector._id} value={sector._id}>
-                                {sector.name}
-                              </option>
-                            ))}
-                        </Select>
+                          I agree to the Terms of use and Privacy Policy
+                        </Checkbox>
+                      )}
 
-                        {/* Sub-Sector Select */}
-                        {props.values.sector &&
-                          sectors.find((s: Sector) => s._id === props.values.sector)?.subSectors.length > 0 && (
-                            <Select
-                              placeholder="Select Sub-Sector"
-                              name="subSector"
-                              onChange={(e) => {
-                                props.handleChange("subSector")(e);
-                                props.setFieldValue("childSubSector", ""); // Reset childSubSector value
-                              }}
-                              value={props.values.subSector}
-                            >
-                              {sectors
-                                .find((s: Sector) => s._id === props.values.sector)
-                                ?.subSectors.map((subSector: Sector) => (
-                                  <option key={subSector._id} value={subSector._id}>
-                                    {subSector.name}
-                                  </option>
-                                ))}
-                            </Select>
-                          )}
-
-                        {/* Child Sub-Sector Select */}
-                        {props.values.subSector &&
-                          sectors
-                            .find((s: Sector) => s._id === props.values.sector)
-                            ?.subSectors.find((ss: Sector) => ss._id === props.values.subSector)?.subSectors.length >
-                            0 && (
-                            <Select
-                              placeholder="Select Child Sub-Sector"
-                              name="childSubSector"
-                              onChange={props.handleChange("childSubSector")}
-                              value={props.values.childSubSector}
-                            >
-                              {sectors
-                                .find((s: Sector) => s._id === props.values.sector)
-                                ?.subSectors.find((ss: Sector) => ss._id === props.values.subSector)
-                                ?.subSectors.map((childSubSector: Sector) => (
-                                  <option key={childSubSector._id} value={childSubSector._id}>
-                                    {childSubSector.name}
-                                  </option>
-                                ))}
-                            </Select>
-                          )}
-                      </>
-                    )}
-
-                    {!firstName && (
-                      <Checkbox
-                        isChecked={props.values.agreedTerms}
-                        onChange={() => props.setFieldValue("agreedTerms", !props.values.agreedTerms)}
-                        name="agreedTerms"
-                      >
-                        I agree to the Terms of use and Privacy Policy
-                      </Checkbox>
-                    )}
-
-                    {firstName ? (
-                      <Button type="submit">{mutation.isPending ? <Spinner /> : "Update"}</Button>
-                    ) : (
-                      <Button type="submit">{mutation.isPending ? <Spinner /> : "Save"}</Button>
-                    )}
-                  </Stack>
-                </Box>
-              </Form>
-            );
-          }}
-        </Formik>
-      </Box>
-    </Flex>
+                      {firstName ? (
+                        <Button type="submit">{mutation.isPending ? <Spinner /> : "Update"}</Button>
+                      ) : (
+                        <Button type="submit">{mutation.isPending ? <Spinner /> : "Save"}</Button>
+                      )}
+                    </Stack>
+                  </Box>
+                </Form>
+              );
+            }}
+          </Formik>
+        </Box>
+      </Flex>
+    </Box>
   );
 };
 

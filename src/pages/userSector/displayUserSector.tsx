@@ -1,7 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Card } from "@chakra-ui/card";
 import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
-import { ReactComponent as ArrowLeft } from "../../svgs/arrow-left.svg";
 import { appStore } from "../../store";
 import { getData } from "../../utils/helpers/request";
 import { useQuery } from "@tanstack/react-query";
@@ -23,11 +22,6 @@ const DisplayUserSector = () => {
   return (
     <Box>
       <Flex mt="40px" ms="100px" direction="column" alignItems="flex-start" gap="4">
-        <Button variant="ghosted" color="#4197E8" fontWeight="400" fontSize="md" ps="0" display="flex" gap="2">
-          <ArrowLeft />
-          <Link to={"/user-sector"}>Go Back</Link>
-        </Button>
-
         <Text as="b" fontSize="xl">
           {user && user?.name}
         </Text>
@@ -37,7 +31,7 @@ const DisplayUserSector = () => {
         <Card width={{ base: "90%", md: "80%", lg: "60%", xl: "50%" }} p={{ base: "20px", md: "40px" }}>
           <Stack spacing="24px">
             <Flex justifyContent="space-between" alignItems="center">
-              <Heading fontSize="2xl">User Sectors</Heading>
+              <Heading fontSize="2xl">All User's Sectors</Heading>
 
               <Button fontSize="xs" width={{ md: "215px" }}>
                 <Link to={"/add-user-sector"}>Add New</Link>
